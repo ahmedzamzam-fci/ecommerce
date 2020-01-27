@@ -1,0 +1,12 @@
+h2 {
+  margin-left: 14%;
+}
+
+.card-display {
+  display: inline-block;
+  max-width: 18rem;
+}
+
+.card-deck {
+  margin-left: 13%;
+}

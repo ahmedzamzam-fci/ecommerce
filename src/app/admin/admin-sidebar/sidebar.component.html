@@ -1,0 +1,12 @@
+<body>
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+  <a [routerLink] = "['/admin/items']">Items</a>
+  <a [routerLink] = "['/Categories']">Categories</a>
+  <a [routerLink] = "['/SubCategories']">SubCategories</a>
+</div>
+
+<div id="main">
+  <span style="font-size:30px;cursor:pointer" (click)="openNav()">&#9776;</span>
+</div>
+</body>

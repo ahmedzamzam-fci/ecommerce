@@ -1,0 +1,56 @@
+
+<span class="badge badge-pill badge-primary">View All Items</span>
+<br>
+<span>
+    <button type="button" [routerLink] = "['/item-new']" class="btn btn-outline-success my-button">Create New Item</button>
+</span>
+<ul class="list-group">
+
+  <li class="list-group-item">
+    <div class="row">
+      <div class="col-2">
+        <b> Name</b>
+      </div>
+      <div class="col-2">
+        <b> Description</b>
+      </div>
+      <div class="col-2">
+        <b>Price</b>
+      </div>
+      <div class="col-2">
+          <b>Image</b>
+        </div>
+      <div class="col-1">
+        <b>Edit</b>
+      </div>
+      <div class="col-1">
+        <b>Delete</b>
+      </div>
+    </div>
+  </li>
+
+  <li class="list-group-item" *ngFor="let item of items">
+    <div class="row">
+      <div class="col-2">
+        {{item.name}}
+      </div>
+      <div class="col-2">
+        {{item.desc}}
+      </div>
+      <div class="col-2">
+        {{item.price}}
+      </div>
+      <div class="col-2">
+       <img  src="{{item.image}}"  style="width:85px; height:85px" >
+      </div>
+      <div class="col-1">
+        <button type="button"  [routerLink] = "['/edit-item',item.id]" class="btn btn-success">Edit</button>
+      </div>
+      <div class="col-1">
+        <button type="button" (click)="onDelete(item.id)" class="btn btn-danger">Delete </button>
+      </div>
+    </div>
+  </li>
+</ul>
+
+

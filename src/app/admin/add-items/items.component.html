@@ -1,0 +1,71 @@
+<div class="" id="page-wrapper">
+  <div class="container-fluid">
+    <div class="row row-stat">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-heading panel-heading-divider">{{pageTitle}} Items<span class="panel-subtitle">Here We
+              can {{pageTitle}} new Items</span>
+          </div>
+          <div class="panel-body">
+            <div class="xs-mt-10 xs-mb-10  ">
+              <div class="row">
+                <div class="col-md-8">
+                  <form [formGroup]="itemForm" (submit)="onSaveItem()" *ngIf="!isLoading" class="form-horizontal"
+                    novalidate>
+                    <div class="form-group">
+                      <div class="row">
+                        <label class="col-sm-3 control-label" for="item-name">Item Name</label>
+                        <div class="col-sm-9">
+                          <input id="item-name" formControlName="name" class="form-control" type="text">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="row">
+                        <label class="col-sm-3 control-label" for="sub-category-desc">Item Description</label>
+                        <div class="col-sm-9">
+                          <textarea formControlName="desc" class="form-control" rows="3"> </textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="row">
+                        <label class="col-sm-3 control-label" for="sub-category-desc">Price</label>
+                        <div class="col-sm-9">
+                          <input formControlName="price" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="row">
+                        <label class="col-sm-3 control-label" for="form-control-9">Sub Category</label>
+                       <div class="col-sm-9">
+                          <select formControlName="subcatid" class="form-control">
+                            <option *ngFor="let subcategory of subCategories; let i = index" value={{subcategory.id}}>
+                              {{subcategory.name}} </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="image-preview"
+                      *ngIf="imagePreview !== '' && imagePreview && itemForm.get('image').valid">
+                      <img [src]="imagePreview" [alt]="itemForm.value.title">
+                    </div>
+                    <div>
+                      <button mat-stroked-button type="button" (click)="filePicker.click()">Category Image</button>
+                      <input type="file" (change)="onImagePicked($event)" #filePicker>
+                    </div>
+                    <div class="form-group">
+                      <div class="row">
+                        <button _ngcontent-ktq-c6 class="btn btn-space btn-success" type="submit">Save Item</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

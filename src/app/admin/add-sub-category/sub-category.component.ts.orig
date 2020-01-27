@@ -1,0 +1,148 @@
+
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { CategoryService } from '../../services/categories.service';
+import { SubCategoryService } from '../../services/subcategories.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { SubCategories } from '../../model/sub-categories.model';
+import { mimeType } from '../../utils/mime-type.validator';
+import { Categories } from 'src/app/model/Categories.model';
+import { Subscription } from 'rxjs';
+// import {Categories} from '../../model/Categories.model';
+
+@Component({
+  selector: 'app-sub-category-new',
+  templateUrl: './sub-category.component.html',
+  styleUrls: ['../../../assets/css/style.default.css']
+})
+
+export class SubCategoryComponent implements OnInit {
+  enteredTitle = '';
+  enteredContent = '';
+  subCategory: SubCategories;
+  isLoading = false;
+  subCatForm: FormGroup;
+  imagePreview: string;
+  private mode = 'create';
+  private subCategoryId: string;
+  // Categories: any = [];
+  categories: Categories[] = [];
+  catSub: Subscription;
+
+
+
+  get formControls() { return this.subCatForm.controls; }
+  constructor(
+    public subCategoryService: SubCategoryService,
+    public route: ActivatedRoute,
+    private ngZone: NgZone,
+    private categoryService: CategoryService
+  ) {
+    this.getCategories();
+  }
+
+  ngOnInit() {
+    this.subCatForm = new FormGroup({
+      name: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(3)]
+      }),
+      desc: new FormControl(null, { validators: [Validators.required] }),
+      catid: new FormControl(null),
+      image: new FormControl(null, {
+        validators: [Validators.required],
+        asyncValidators: [mimeType]
+      })
+    });
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if (paramMap.has('subCatId')) {
+        this.mode = 'edit';
+        this.subCategoryId = paramMap.get('subCatId');
+        console.log (this.subCategoryId);
+        this.isLoading = true;
+        this.subCategoryService.getSubCategory(this.subCategoryId).subscribe(subCategoryData => {
+          this.isLoading = false;
+          // this.subCatForm.controls.id.setValue( subCategoryData._id);
+          // this.subCatForm.controls.name.setValue( subCategoryData.name);
+          // this.subCatForm.controls.desc.setValue( subCategoryData.desc);
+          // this.subCatForm.controls.catid.setValue( subCategoryData.catid);
+          // this.subCatForm.controls.image.setValue( subCategoryData.image);
+          this.subCategory = {
+            id: subCategoryData._id,
+            name: subCategoryData.name,
+            desc: subCategoryData.desc,
+            catid: subCategoryData.catid,
+            image: subCategoryData.image
+          };
+          console.log (            'id:' + subCategoryData._id +
+            'name:' + subCategoryData.name +
+            'desc:' + subCategoryData.desc +
+            'catid:' + subCategoryData.catid +
+            'image:' + subCategoryData.image);
+          this.subCatForm.setValue({
+            name: this.subCategory.name,
+            desc: this.subCategory.desc,
+            catid: this.subCategory.catid,
+            image: this.subCategory.image
+          });
+        });
+      } else {
+        this.mode = 'create';
+        this.subCategoryId = null;
+      }
+    });
+  }
+
+  onImagePicked(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.subCatForm.patchValue({ image: file });
+    this.subCatForm.get('image').updateValueAndValidity();
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string ;
+    };
+    reader.readAsDataURL(file);
+  }
+<<<<<<< HEAD
+getCategories() {
+  this.categoryService.getCategories().subscribe((data) => {
+    this.Categories = data;
+    console.log(data);
+  });
+}
+=======
+  getCategories() {
+    this.categoryService.getCategories();
+    this.catSub = this.categoryService.getCategoryUpdateListener().subscribe((category: Categories[]) => {
+      this.isLoading = false;
+      this.categories = category;
+      console.log(this.categories);
+    });
+
+  }
+
+
+>>>>>>> master
+  onSaveSubCategory() {
+    if (this.subCatForm.invalid) {
+      return;
+    }
+    this.isLoading = true;
+    if (this.mode === 'create') {
+      this.subCategoryService.addSubCategory(
+        this.subCatForm.value.name,
+        this.subCatForm.value.desc,
+        this.subCatForm.value.catid,
+        this.subCatForm.value.image
+      );
+    } else {
+      this.subCategoryService.updateSubCategory(
+           this.subCategoryId,
+         this.subCatForm.value.name,
+         this.subCatForm.value.desc,
+         this.subCatForm.value.catid,
+         this.subCatForm.value.image
+         );
+}
+    this.subCatForm.reset();
+  }
+}

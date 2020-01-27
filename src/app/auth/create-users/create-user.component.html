@@ -1,0 +1,27 @@
+<div class="holder">
+  <mat-card>
+    <!-- <form (submit)="onCreateUser(userform)"   #userform="ngForm"> -->
+        <form (submit)="onCreateUser(categoryform)"   #categoryform="ngForm">
+
+    <mat-card-title class="title-color">
+      Sign up
+    </mat-card-title>
+      <mat-form-field>
+        <input matInput  ngModel  required placeholder="username"  name="username"     #username="ngModel" />
+      </mat-form-field>
+      <mat-form-field>
+      <input matInput  ngModel required  placeholder="Email"  name="email" #email="ngModel" />
+      </mat-form-field>
+      <mat-form-field>
+      <input matInput ngModel required placeholder="Password" type='password'  name ="password" #password="ngModel" />
+      </mat-form-field>
+      <mat-form-field>
+          <input matInput ngModel placeholder="Re-enter password" type='password' required name ="reenterpassword" #reenterpassword="ngModel"/>
+      </mat-form-field>
+      <mat-error *ngIf="errorFlag ==1">
+          Please enter matching passwords
+      </mat-error>
+          <button  mat-button color="primary" class="button-spacing"  type="submit">Sign up</button>
+        </form>
+  </mat-card>
+</div>
